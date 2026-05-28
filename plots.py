@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -7,11 +9,9 @@ os.makedirs('output/plots/descriptive', exist_ok=True)
 os.makedirs('output/plots/explorative', exist_ok=True)
 os.makedirs('datasets', exist_ok=True)
 
-path = 'Datasets'
-csv_file = [f for f in os.listdir(path) if f.endswith('.csv')][0]
-
-
-df = pd.read_csv(os.path.join(path, csv_file))
+# CSV-Datei im Ordner finden
+path = Path(__file__).parent / 'datasets' / 'WA_Fn-UseC_-Telco-Customer-Churn.csv'
+df = pd.read_csv(path)
 df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce').fillna(0)
 
 summary_df = pd.read_csv('output/descriptive_analysis.csv')

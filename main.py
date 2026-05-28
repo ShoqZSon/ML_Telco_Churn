@@ -1,19 +1,31 @@
+from pathlib import Path
+
 import kagglehub
 import numpy as np
 import pandas as pd
 import os
 from data_cleansing import clean_data
+import shutil
+from eda_and_baseline import eda_baseline
 
 os.makedirs('output/plots/descriptive', exist_ok=True)
 os.makedirs('output/plots/explorative', exist_ok=True)
 os.makedirs('datasets', exist_ok=True)
 
-path = kagglehub.dataset_download("blastchar/telco-customer-churn")
+download_path = kagglehub.dataset_download('blastchar/telco-customer-churn')
+
+path = Path(download_path, 'WA_Fn-UseC_-Telco-Customer-Churn.csv')
+shutil.copy(path, 'datasets')
+
+path = Path('datasets','WA_Fn-UseC_-Telco-Customer-Churn.csv')
 
 # CSV-Datei im Ordner finden
-csv_file = [f for f in os.listdir(path) if f.endswith('.csv')][0]
-df = pd.read_csv(os.path.join(path, csv_file))
-df = clean_data(df, path, csv_file)
+df = pd.read_csv(path)
+
+eda_baseline(df)
+
+# Data Cleansing
+df = clean_data(df)
 
 # Checking for invalid entries
 print("===== Validierungsreport =====\n")
@@ -64,9 +76,6 @@ for col in df.columns[1:]:
     print()
 
 print("\n===== Ende Report =====")
-
-# Data Cleansing
-df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce').fillna(0)
 
 # Descriptive analysis - raw data
 rows = []
