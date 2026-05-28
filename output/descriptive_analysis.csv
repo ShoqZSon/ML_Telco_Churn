@@ -1,0 +1,6 @@
+Column,Type,NaN Values,Median,Mean,Value Distribution
+SeniorCitizen,str,0,,,No: 83.79% | Yes: 16.21%
+tenure,int64,0,29.0,32.37,
+MonthlyCharges,float64,0,70.35,64.76,
+TotalCharges,float64,0,1394.55,2279.73,
+Churn,int64,0,0.0,0.27,

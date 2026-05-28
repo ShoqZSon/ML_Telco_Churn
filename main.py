@@ -2,16 +2,18 @@ import kagglehub
 import numpy as np
 import pandas as pd
 import os
+from data_cleansing import clean_data
 
 os.makedirs('output/plots/descriptive', exist_ok=True)
 os.makedirs('output/plots/explorative', exist_ok=True)
 os.makedirs('datasets', exist_ok=True)
 
-path = kagglehub.dataset_download("blastchar/telco-customer-churn", output_dir='datasets')
+path = kagglehub.dataset_download("blastchar/telco-customer-churn")
 
 # CSV-Datei im Ordner finden
 csv_file = [f for f in os.listdir(path) if f.endswith('.csv')][0]
 df = pd.read_csv(os.path.join(path, csv_file))
+df = clean_data(df, path, csv_file)
 
 # Checking for invalid entries
 print("===== Validierungsreport =====\n")
